@@ -1,22 +1,22 @@
 # --- Web Framework & Server ---
-fastapi==0.115.0
-uvicorn==0.30.6
+fastapi
+uvicorn
 
 # --- Database & ORM ---
-sqlalchemy==2.0.35
-psycopg2-binary==2.9.9
-alembic==1.13.2
+sqlalchemy
+psycopg2-binary
+alembic
 
 # --- Security & Authentication ---
-passlib[bcrypt]==1.7.4
-python-jose[cryptography]==3.3.0
-python-multipart==0.0.9
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
 
 # --- AI & OCR Engine ---
-pytesseract==0.3.10
-Pillow==10.4.0
+pytesseract
+Pillow
 
 # --- Environment & Utilities ---
-python-dotenv==1.0.1
-pydantic[email]==2.9.2
-pydantic-settings==2.5.2
+python-dotenv
+pydantic[email]
+pydantic-settings

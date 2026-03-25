@@ -2,23 +2,25 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
 
-# Load variables from your .env file
-load_dotenv()
+# 1. Get URL from Render Environment (Internal Database URL)
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Get the URL from .env. If it's missing, it uses a fallback string.
-SQLALCHEMY_DATABASE_URL = os.getenv(
-    "DATABASE_URL", 
-    "postgresql://postgres:MediSuite2026@localhost:5432/medisuite_db"
-)
+# 2. Fix 'postgres://' for SQLAlchemy compatibility
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-# Connect to the database
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+# 3. Fallback for local PC (Change 'password' to your local DB password)
+if not DATABASE_URL:
+    DATABASE_URL = "postgresql://postgres:password@localhost:5432/medisuite_db"
+
+# 4. Create Engine with pool_pre_ping to prevent connection drops on Render
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# Dependency to get a database session for each request
+# 5. Dependency used in main.py routes
 def get_db():
     db = SessionLocal()
     try:
